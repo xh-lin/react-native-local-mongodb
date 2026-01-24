@@ -55,7 +55,7 @@
     "mocha": "^11.7.5",
     "prettier": "2.5.1",
     "react-native": "latest",
-    "sinon": "1.3.x",
+    "sinon": "21.0.x",
     "ts-jest": "27.1.1",
     "typescript": "4.5.4"
   },
