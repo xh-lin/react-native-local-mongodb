@@ -1,0 +1,9 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+
+# Read Node version from .nvmrc and use it
+NODE_VERSION=$(cat .nvmrc)
+nvm exec "$NODE_VERSION" npm test
