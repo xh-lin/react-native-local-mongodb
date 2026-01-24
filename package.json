@@ -7,7 +7,7 @@
   ],
   "scripts": {
     "test": "NODE_ENV=test ./node_modules/.bin/jest --verbose && npm run test-db",
-    "test-db": "./node_modules/.bin/mocha test/dbTest.test.js --reporter spec --timeout 10000",
+    "test-db": "npx mocha test/dbTest.test.js --reporter spec --timeout 10000",
     "prepare": "husky install"
   },
   "main": "index",
