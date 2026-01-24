@@ -33,8 +33,7 @@
     "async": "2.6.4",
     "binary-search-tree": "0.2.5",
     "events": "1.1.0",
-    "underscore": "^1.13.2",
-    "util": "0.10.3"
+    "underscore": "^1.13.2"
   },
   "peerDependencies": {
     "react-native": "*"
