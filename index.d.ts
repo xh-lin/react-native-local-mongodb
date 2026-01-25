@@ -2,16 +2,19 @@ declare module "react-native-local-mongodb" {
   export interface StorageStatic {
     getItem(
       key: string,
-      callback?: (error?: Error, result?: string) => void
+      callback?: (error?: Error | null, result?: string | null) => void
     ): Promise<string | null>;
 
     setItem(
       key: string,
       value: string,
-      callback?: (error?: Error) => void
+      callback?: (error?: Error | null) => void
     ): Promise<void>;
 
-    removeItem(key: string, callback?: (error?: Error) => void): Promise<void>;
+    removeItem(
+      key: string,
+      callback?: (error?: Error | null) => void
+    ): Promise<void>;
   }
 
   export interface Options {
