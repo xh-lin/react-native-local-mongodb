@@ -1,7 +1,12 @@
 import { getDb } from '../config/jest/helper'
 
+interface TestDoc {
+  name: string;
+  age?: number;
+}
+
 it('update with promise', async () => {
-  const db = await getDb()
+  const db = await getDb<TestDoc>();
   const items0 = await db.findAsync({})
 
   await db.insertAsync({ name: 'Maggie' })
@@ -26,7 +31,7 @@ it('update with promise', async () => {
 })
 
 it('update with callback', async () => {
-  const db = await getDb()
+  const db = await getDb<TestDoc>();
   const items0 = await db.findAsync({})
 
   await db.insertAsync({ name: 'Maggie' })
@@ -37,17 +42,17 @@ it('update with callback', async () => {
   const maggie1 = await db.findOneAsync({ name: 'Maggie' })
   const bob1 = await db.findOneAsync({ name: 'Bob' })
 
-  const res = await new Promise((resolve, reject) => {
+  const res = await new Promise<number>((resolve, reject) => {
     db.update(
       { name: { $in: ['Maggie', 'Bob'] } },
       { $set: { age: 1 } },
       { multi: true },
       (err, result) => {
-        if (err) reject(err)
-        else resolve(result)
+        if (err) reject(err);
+        else resolve(result);
       }
-    )
-  })
+    );
+  });
 
   const maggie2 = await db.findOneAsync({ name: 'Maggie' })
   const bob2 = await db.findOneAsync({ name: 'Bob' })
@@ -62,7 +67,7 @@ it('update with callback', async () => {
 })
 
 it('remove with callback', async () => {
-  const db = await getDb()
+  const db = await getDb<TestDoc>();
   const items0 = await db.findAsync({})
 
   await db.insertAsync({ name: 'Maggie' })
@@ -70,12 +75,12 @@ it('remove with callback', async () => {
 
   const items = await db.findAsync({})
 
-  const res = await new Promise((resolve, reject) => {
+  const res = await new Promise<number>((resolve, reject) => {
     db.remove({ name: { $in: ['Bob'] } }, { multi: true }, (err, result) => {
-      if (err) reject(err)
-      else resolve(result)
-    })
-  })
+      if (err) reject(err);
+      else resolve(result);
+    });
+  });
 
   const bob2 = await db.findOneAsync({ name: 'Bob' })
 
@@ -86,7 +91,7 @@ it('remove with callback', async () => {
 })
 
 it('resolve remove nonexistent', async () => {
-  const db = await getDb()
+  const db = await getDb<TestDoc>();
   const items0 = await db.findAsync({})
 
   await db.insertAsync({ name: 'Maggie' })
@@ -94,12 +99,12 @@ it('resolve remove nonexistent', async () => {
 
   const items = await db.findAsync({})
 
-  const res = await new Promise((resolve, reject) => {
+  const res = await new Promise<number>((resolve, reject) => {
     db.remove({ name: 'nonexistent' }, { multi: true }, (err, result) => {
-      if (err) reject(err)
-      else resolve(result)
-    })
-  })
+      if (err) reject(err);
+      else resolve(result);
+    });
+  });
 
   const nonexistent = await db.findOneAsync({ name: 'nonexistent' })
 
@@ -110,38 +115,42 @@ it('resolve remove nonexistent', async () => {
 })
 
 it('resolve findOne nonexistent', async () => {
-  const db = await getDb()
+  const db = await getDb<TestDoc>();
   await db.insertAsync({ name: 'Maggie' })
   await db.insertAsync({ name: 'Bob' })
 
   const items = await db.findAsync({ name: 'nonexistent' })
 
-  const item = await db.findOneAsync({ name: 'nonexistent' }, function() {})
+  const item = await db.findOneAsync({ name: 'nonexistent' });
 
   expect(item).toBeNull()
   expect(items.length).toEqual(0)
 })
 
 it('should limit', async () => {
-  const db = await getDb()
+  const db = await getDb<TestDoc>();
   await db.insertAsync({ name: 'A' })
   await db.insertAsync({ name: 'B' })
   await db.insertAsync({ name: 'C' })
   await db.insertAsync({ name: 'D' })
 
-  const docs = await new Promise((resolve, reject) => {
-    db.find({}).sort({ name: 1 }).skip(1).limit(2).exec((err, results) => {
-      if (err) reject(err)
-      else resolve(results)
-    })
-  })
+  const docs = await new Promise<TestDoc[]>((resolve, reject) => {
+    db.find({})
+      .sort({ name: 1 })
+      .skip(1)
+      .limit(2)
+      .exec((err, results) => {
+        if (err) reject(err);
+        else resolve(results);
+      });
+  });
 
   expect(docs.length).toEqual(2)
   expect(docs[1].name).toEqual('C')
 })
 
 it('should limit async', async () => {
-  const db = await getDb()
+  const db = await getDb<TestDoc>();
   await db.insertAsync({ name: 'A' })
   await db.insertAsync({ name: 'B' })
   await db.insertAsync({ name: 'C' })

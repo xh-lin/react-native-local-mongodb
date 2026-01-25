@@ -15,6 +15,9 @@ declare module "react-native-local-mongodb" {
       key: string,
       callback?: (error?: Error | null) => void
     ): Promise<void>;
+
+    // Allow any additional properties
+    [key: string]: any;
   }
 
   export interface Options {
