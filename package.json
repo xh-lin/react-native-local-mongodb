@@ -13,9 +13,6 @@
   "main": "index",
   "typings": "index.d.ts",
   "license": "SEE LICENSE IN LICENSE",
-  "engines": {
-    "node": "14.x"
-  },
   "bugs": {
     "url": "https://github.com/antoniopresto/react-native-local-mongodb/issues"
   },
