@@ -51,7 +51,7 @@ declare module "react-native-local-mongodb" {
   }
 
   export interface MongoDocument {
-    _id: string;
+    _id?: string;
     [key: string]: any;
   }
 
