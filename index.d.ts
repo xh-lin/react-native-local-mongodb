@@ -53,11 +53,12 @@ declare module "react-native-local-mongodb" {
 
   export type SortOrder = 1 | -1;
   export type SortQuery = Record<string, SortOrder>;
+  export type ExecCallback<T> = (err: Error | null, result: T) => void;
 
   export interface Cursor<T> {
     exec(): Promise<T>;
 
-    exec(cb: Callback<T>): void;
+    exec(callback: ExecCallback<T>): void;
 
     skip(value: number): Cursor<T>;
 
@@ -67,9 +68,15 @@ declare module "react-native-local-mongodb" {
   }
 
   export type Query = object;
-  export type Projection = any;
-  export type Callback<T = void> = (err: Error | null, value: T) => void;
-  export type InsertCallback<T> = (err: Error | null, doc: T) => void;
+  export type UpdateQuery = object;
+  export type Projection = object;
+  export type EnsureIndexCallback = (err: Error | null) => void;
+  export type RemoveIndexCallback = (err: Error | null) => void;
+  export type GetCandidatesCallback<T> = (
+    err: Error | null,
+    candidates: T[]
+  ) => void;
+  export type InsertCallback<T> = (err: Error | null, insertedDoc: T) => void;
   export type CountCallback = (err: Error | null, count: number) => void;
   export type FindCallback<T> = (err: Error | null, docs: T[]) => void;
   export type FindOneCallback<T> = (err: Error | null, doc: T) => void;
@@ -79,7 +86,7 @@ declare module "react-native-local-mongodb" {
     affectedDocuments: T | T[] | null,
     upsert: boolean
   ) => void;
-  export type RemoveCallback = (err: Error | null, numAffected: number) => void;
+  export type RemoveCallback = (err: Error | null, numRemoved: number) => void;
 
   export default class Datastore<T = MongoDocument> {
     constructor(options?: Options);
@@ -88,25 +95,29 @@ declare module "react-native-local-mongodb" {
 
     public getAllData(): T[];
 
-    public resetIndexes(newData: T[]): void;
+    public resetIndexes(newData?: T | T[]): void;
 
-    public ensureIndex(options: IndexOptions, callback?: Callback): void;
+    public ensureIndex(
+      options: IndexOptions,
+      callback?: EnsureIndexCallback
+    ): void;
 
-    public removeIndex(fieldName: string, callback?: Callback): void;
+    public removeIndex(fieldName: string, callback?: RemoveIndexCallback): void;
 
     public addToIndexes(doc: T): void;
 
     public removeFromIndexes(doc: T): void;
 
+    public updateIndexes(pairs: Array<{ oldDoc: T; newDoc: T }>): void;
     public updateIndexes(oldDoc: T, newDoc: T): void;
 
     public getCandidates(
       query: Query,
       dontExpireStaleDocs: boolean,
-      callback?: Callback
+      callback?: GetCandidatesCallback<T>
     ): void;
 
-    public insert(newDoc: T, cb: InsertCallback<T>): void;
+    public insert(newDoc: T, callback?: InsertCallback<T>): void;
 
     public createNewId(): number;
 
@@ -131,7 +142,7 @@ declare module "react-native-local-mongodb" {
 
     public update(
       query: Query,
-      doc: T,
+      updateQuery: UpdateQuery,
       options?: UpdateOptions,
       callback?: UpdateCallback<T>
     ): void;
@@ -152,7 +163,7 @@ declare module "react-native-local-mongodb" {
 
     public updateAsync(
       query: Query,
-      doc: T,
+      updateQuery: UpdateQuery,
       options?: UpdateOptions
     ): Promise<number>;
 
