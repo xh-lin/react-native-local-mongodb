@@ -48,6 +48,9 @@ declare module "react-native-local-mongodb" {
     [key: string]: any;
   }
 
+  export type SortOrder = 1 | -1;
+  export type SortQuery = Record<string, SortOrder>;
+
   export interface Cursor<T> {
     exec(): Promise<T>;
 
@@ -57,20 +60,20 @@ declare module "react-native-local-mongodb" {
 
     limit(value: number): Cursor<T>;
 
-    sort(doc: MongoDocument): Cursor<T>;
+    sort(sortQuery: SortQuery): Cursor<T>;
   }
 
   export type Query = object;
   export type Projection = any;
   export type Callback<T = void> = (err: Error | null, value: T) => void;
-  export type InsertCallback = (err: Error | null, doc: MongoDocument) => void;
+  export type InsertCallback<T> = (err: Error | null, doc: T) => void;
   export type CountCallback = (err: Error | null, count: number) => void;
-  export type FindCallback = (err: Error | null, docs: MongoDocument[]) => void;
-  export type FindOneCallback = (err: Error | null, doc: MongoDocument) => void;
-  export type UpdateCallback = (
+  export type FindCallback<T> = (err: Error | null, docs: T[]) => void;
+  export type FindOneCallback<T> = (err: Error | null, doc: T) => void;
+  export type UpdateCallback<T> = (
     err: Error | null,
     numAffected: number,
-    affectedDocuments: MongoDocument | MongoDocument[] | null,
+    affectedDocuments: T | T[] | null,
     upsert: boolean
   ) => void;
   export type RemoveCallback = (err: Error | null, numAffected: number) => void;
@@ -94,26 +97,47 @@ declare module "react-native-local-mongodb" {
 
     public updateIndexes(oldDoc: T, newDoc: T): void;
 
-    public getCandidates(query: Query, dontExpireStaleDocs: boolean, callback?: Callback): void;
+    public getCandidates(
+      query: Query,
+      dontExpireStaleDocs: boolean,
+      callback?: Callback
+    ): void;
 
-    public insert(newDoc: T, cb: InsertCallback): void;
+    public insert(newDoc: T, cb: InsertCallback<T>): void;
 
     public createNewId(): number;
 
     public count(query: Query): Cursor<number>;
-    public count(query: Query, callback: Callback<number>): void;
+    public count(query: Query, callback: CountCallback): void;
 
     public find(query: Query): Cursor<T[]>;
     public find(query: Query, projection: Projection): Cursor<T[]>;
-    public find(query: Query, projection: Projection, callback: Callback<T[]>): void;
+    public find(
+      query: Query,
+      projection: Projection,
+      callback: FindCallback<T>
+    ): void;
 
     public findOne(query: Query): Cursor<T>;
     public findOne(query: Query, projection: Projection): Cursor<T>;
-    public findOne(query: Query, projection: Projection, callback: Callback<T>): void;
+    public findOne(
+      query: Query,
+      projection: Projection,
+      callback: FindOneCallback<T>
+    ): void;
 
-    public update(query: Query, doc: T, options?: UpdateOptions, callback?: UpdateCallback): void;
+    public update(
+      query: Query,
+      doc: T,
+      options?: UpdateOptions,
+      callback?: UpdateCallback<T>
+    ): void;
 
-    public remove(query: Query, options?: RemoveOptions, callback?: RemoveCallback): void;
+    public remove(
+      query: Query,
+      options?: RemoveOptions,
+      callback?: RemoveCallback
+    ): void;
 
     public loadDatabaseAsync(): Promise<void>;
 
@@ -123,7 +147,11 @@ declare module "react-native-local-mongodb" {
 
     public insertAsync(newDoc: T): Promise<T>;
 
-    public updateAsync(query: Query, doc: T, options?: UpdateOptions): Promise<number>;
+    public updateAsync(
+      query: Query,
+      doc: T,
+      options?: UpdateOptions
+    ): Promise<number>;
 
     public removeAsync(query: Query, options?: RemoveOptions): Promise<number>;
   }
