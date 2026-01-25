@@ -2,8 +2,8 @@
 . "$(dirname "$0")/_/husky.sh"
 
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-# Read Node version from .nvmrc and use it
-NODE_VERSION=$(cat .nvmrc)
-nvm exec "$NODE_VERSION" npm test
+nvm use # Read Node version from .nvmrc
+npm test
