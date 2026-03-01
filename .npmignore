@@ -1,6 +1,5 @@
-# Tests and fixtures
+# Tests
 test/
-config/
 
 # Development tooling
 node_modules/

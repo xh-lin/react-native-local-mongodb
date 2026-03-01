@@ -8,6 +8,6 @@ module.exports = {
   testPathIgnorePatterns: ['/test/dbTest.test.js$'],
   moduleNameMapper: {
     'react-native-local-mongodb': '<rootDir>/index.js',
-    'react-native': '<rootDir>/config/jest/reactNativeMock.js',
+    'react-native': '<rootDir>/test/fixtures/reactNativeMock.js',
   },
 };

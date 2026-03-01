@@ -4,7 +4,7 @@ var should = require('chai').should(),
   _ = require('underscore'),
   async = require('async'),
   Datastore = require('../lib/datastore'),
-  storage = require('../config/AsyncStorageMock'),
+  storage = require('./fixtures/AsyncStorageMock'),
   reloadTimeUpperBound = 60; // In ms, an upper bound for the reload time used to check createdAt and updatedAt
 
 describe('Database', function () {
