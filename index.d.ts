@@ -1,4 +1,4 @@
-declare module "react-native-local-mongodb" {
+declare module 'react-native-local-mongodb' {
   export interface StorageStatic {
     getItem(
       key: string,
@@ -57,7 +57,8 @@ declare module "react-native-local-mongodb" {
 
   export type SortOrder = 1 | -1;
   export type SortQuery = Record<string, SortOrder>;
-  export type ExecCallback<T> = (err: Error | null, result: T) => void;
+  // callback result can be undefined when having error
+  export type ExecCallback<T> = (err: Error | null, result?: T) => void;
 
   export interface Cursor<T> {
     exec(): Promise<T>;
@@ -78,19 +79,19 @@ declare module "react-native-local-mongodb" {
   export type RemoveIndexCallback = (err: Error | null) => void;
   export type GetCandidatesCallback<T> = (
     err: Error | null,
-    candidates: T[]
+    candidates?: T[]
   ) => void;
-  export type InsertCallback<T> = (err: Error | null, insertedDoc: T) => void;
-  export type CountCallback = (err: Error | null, count: number) => void;
-  export type FindCallback<T> = (err: Error | null, docs: T[]) => void;
-  export type FindOneCallback<T> = (err: Error | null, doc: T) => void;
+  export type InsertCallback<T> = (err: Error | null, insertedDoc?: T) => void;
+  export type CountCallback = (err: Error | null, count?: number) => void;
+  export type FindCallback<T> = (err: Error | null, docs?: T[]) => void;
+  export type FindOneCallback<T> = (err: Error | null, doc?: T | null) => void; // doc can be null when not found
   export type UpdateCallback<T> = (
     err: Error | null,
-    numAffected: number,
-    affectedDocuments: T | T[] | null,
-    upsert: boolean
+    numAffected?: number,
+    affectedDocuments?: T | T[] | null,
+    upsert?: boolean
   ) => void;
-  export type RemoveCallback = (err: Error | null, numRemoved: number) => void;
+  export type RemoveCallback = (err: Error | null, numRemoved?: number) => void;
 
   export default class Datastore<T = MongoDocument> {
     constructor(options?: Options);
@@ -136,8 +137,8 @@ declare module "react-native-local-mongodb" {
       callback: FindCallback<T>
     ): void;
 
-    public findOne(query: Query): Cursor<T>;
-    public findOne(query: Query, projection: Projection): Cursor<T>;
+    public findOne(query: Query): Cursor<T | null>;
+    public findOne(query: Query, projection: Projection): Cursor<T | null>;
     public findOne(
       query: Query,
       projection: Projection,
@@ -161,7 +162,7 @@ declare module "react-native-local-mongodb" {
 
     public findAsync(query: Query): Promise<T[]>;
 
-    public findOneAsync(query: Query): Promise<T>;
+    public findOneAsync(query: Query): Promise<T | null>;
 
     public insertAsync(newDoc: T): Promise<T>;
 
