@@ -1,0 +1,25 @@
+# Tests
+test/
+
+# Development tooling
+node_modules/
+coverage/
+.github/
+.vscode/
+.husky/
+
+# Local/config metadata
+.git/
+.gitignore
+.babelrc
+.prettierrc
+jest.config.js
+tsconfig.json
+
+# Logs and lockfiles
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+package-lock.json

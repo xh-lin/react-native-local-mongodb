@@ -1,13 +1,15 @@
 {
   "name": "react-native-local-mongodb",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "author": "Antonio Presto <antoniopresto@gmail.com>",
   "contributors": [
-    "Antonio Presto"
+    "Antonio Presto",
+    "xh-lin"
   ],
   "scripts": {
     "test": "NODE_ENV=test ./node_modules/.bin/jest --verbose && npm run test-db",
-    "test-db": "./node_modules/.bin/mocha test/dbTest.test.js --reporter spec --timeout 10000"
+    "test-db": "npx mocha test/dbTest.test.js --reporter spec --timeout 10000",
+    "prepare": "husky install"
   },
   "main": "index",
   "typings": "index.d.ts",
@@ -29,29 +31,30 @@
     "url": "git+ssh://git@github.com/antoniopresto/react-native-local-mongodb.git"
   },
   "dependencies": {
-    "async": "2.6.2",
-    "binary-search-tree": "0.2.5",
-    "events": "1.1.0",
-    "underscore": "^1.13.2",
-    "util": "0.10.3"
+    "@seald-io/binary-search-tree": "^1.0.3",
+    "async": "2.6.4",
+    "events": "^3.3.0",
+    "underscore": "^1.13.8"
   },
   "peerDependencies": {
     "react-native": "*"
   },
   "devDependencies": {
-    "@react-native-async-storage/async-storage": "1.15.13",
+    "@babel/core": "^7.28.6",
+    "@babel/preset-env": "^7.28.6",
+    "@react-native-async-storage/async-storage": "^2.2.0",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^25.0.10",
     "@types/react-native": "^0.66.9",
-    "babel-preset-env": "1.6.1",
-    "@types/jest": "27.0.3",
-    "@types/node": "16.11.12",
-    "jest": "27.4.5",
-    "ts-jest": "27.1.1",
-    "typescript": "4.5.4",
-    "chai": "3.2.0",
-    "mocha": "^5.2.0",
-    "react-native": "latest",
-    "sinon": "1.3.x",
-    "prettier": "2.5.1"
+    "babel-jest": "^30.2.0",
+    "chai": "^6.2.2",
+    "husky": "^7.0.4",
+    "jest": "^30.2.0",
+    "mocha": "^11.7.5",
+    "prettier": "2.5.1",
+    "react-native": "^0.83.1",
+    "ts-jest": "^29.4.6",
+    "typescript": "4.5.4"
   },
   "directories": {
     "test": "test"
